@@ -1,5 +1,5 @@
 // Holds our socket server connection
-const socket;
+let socket;
 
 function setup() {
   // DONT CHANGE THIS, connection to mocap server
@@ -31,6 +31,8 @@ function setup() {
     }
   );
 
+  // Put your setup code here
+  // you can delete this if you want
   createCanvas(1000, 400);
   background(0);
 }
