@@ -5,7 +5,7 @@
 - Clone this repo or download zip and setup on computer
 - Install Node.js [from here](https://nodejs.org/en/)
 - Recommended Install Visual Studio Code [from here](https://code.visualstudio.com/)
-- Open project in Terminal or Open project folder with VS Code and press "cmd ` or ctrl+shift `"
+- Open project in Terminal or Open project folder with VS Code and press ``cmd ` `` or ``ctrl+shift ` ``
 - Run command `npm install` to install dependencies
 - Start with sketch.js in the src/ directory for making changes
 
