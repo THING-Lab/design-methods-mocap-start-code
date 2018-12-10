@@ -1,16 +1,11 @@
 // Holds our socket server connection
 let socket;
 
-//position values
-var x;
-var y;
-
-function preload() {
-  backgroundImage = loadImage('images/water.png');
-
-}
+var water;
+var isImageCreated = false;
 
 function setup() {
+
   // DONT CHANGE THIS, connection to mocap server
   socket = io('192.168.0.100:8000');
   // Setup a listener for the frame event containing rigid body data
@@ -42,12 +37,20 @@ function setup() {
 
   // Put your setup code here
   // you can delete this if you want
-  createCanvas(1000, 400);
-  background(backgroundImage);
+  createCanvas(1920, 1080);  
+  // CODE GOES HERE 
+  water = createVideo('images/water.mp4');
+  water.hide();
 }
 
 function draw() {
   // Any draw loop code goes here
-
+  image(water,0,0);
+  
   // For debugging use `console.log` and open up the browser's inspector
 }
+
+function keyPressed() {
+  water.loop();
+}
+
