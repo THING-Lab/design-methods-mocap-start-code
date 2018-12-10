@@ -50,6 +50,7 @@ function draw() {
   // For debugging use `console.log` and open up the browser's inspector
 }
 
+// THIS IS HOW THE GAME IS STARTED
 function keyPressed() {
   water.loop();
 }
