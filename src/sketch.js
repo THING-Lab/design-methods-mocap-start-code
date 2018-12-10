@@ -1,6 +1,15 @@
 // Holds our socket server connection
 let socket;
 
+//position values
+var x;
+var y;
+
+function preload() {
+  backgroundImage = loadImage('images/water.png');
+
+}
+
 function setup() {
   // DONT CHANGE THIS, connection to mocap server
   socket = io('192.168.0.100:8000');
@@ -34,7 +43,7 @@ function setup() {
   // Put your setup code here
   // you can delete this if you want
   createCanvas(1000, 400);
-  background(0);
+  background(backgroundImage);
 }
 
 function draw() {
