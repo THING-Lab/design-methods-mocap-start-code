@@ -165,7 +165,7 @@ function Fish() {
   // initial left side of the screen
   this.x = random(0, 900/9);
   this.y = random(0, 400);
-  this.speed = 1;
+  this.speed = random(.5, 5);
   this.frame = 0;
   this.numFrames = 10;
 
