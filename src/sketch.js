@@ -29,10 +29,12 @@ var bubbleAnimation;
 function preload() {
   // preload start gui animation
   castStartAnimation = loadAnimation("images/castStart/Frame001.png", "images/castStart/Frame012.png");
+  
   // bubble animations
   // bubbleAnimation = loadAnimation()
+
   //fish animations
-  fish1Animation = loadAnimation("images/fish/gradientFish0.png", "images/fish/gradientFish9.png");
+  fish1Animation = loadAnimation("images/greenFish/greenFish0000.png", "images/greenFish/greenFish0090.png");
   sharkAnimation = loadAnimation("images/sharks/shark0000.png", "images/sharks/shark0090.png");
 }
 
@@ -67,10 +69,10 @@ function setup() {
         ellipse(x, y, 20, 20);
 
         // positionvalues of the mocap
-        // console.log("X: " + data[5].x);
-        // console.log("Y: " + data[5].y);
+        console.log("X: " + data[5].x);
+        console.log("Y: " + data[5].y);
          // make sure mocap is under 200 for it to activate
-        // console.log("Z: " + mocapZ);
+        console.log("Z: " + mocapZ);
       }
     }
   );
@@ -200,9 +202,9 @@ function Fish() {
     // initial left side of the screen
   this.x = random(0, 900/9);
   this.y = random(0, 400);
-  this.speed = random(.5, 5);
+  this.speed = 1;
   this.frame = 0;
-  this.numFrames = 10;
+  this.numFrames = 91;
 
   this.display = function () {
     this.frame = this.frame >= this.numFrames ? 0 : this.frame + 1;
@@ -224,7 +226,7 @@ function Shark() {
     // initial left side of the screen
   this.x = random(0, 900 / 9);
   this.y = random(0, 400);
-  this.speed = random(1);
+  this.speed = 1;
   this.frame = 0;
   this.numFrames = 91;
 
