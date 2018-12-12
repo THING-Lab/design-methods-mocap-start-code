@@ -17,12 +17,23 @@ var castStartAnimation;
 var fish1Animation;
 var fishes = [];
 
+// sharks
+var sharkAnimation;
+var sharks = [];
+
+// bubbles
+var bubbleAnimation;
+
+
 // preload animations
 function preload() {
   // preload start gui animation
   castStartAnimation = loadAnimation("images/castStart/Frame001.png", "images/castStart/Frame012.png");
+  // bubble animations
+  // bubbleAnimation = loadAnimation()
   //fish animations
   fish1Animation = loadAnimation("images/fish/gradientFish0.png", "images/fish/gradientFish9.png");
+  sharkAnimation = loadAnimation("images/sharks/shark0000.png", "images/sharks/shark0090.png");
 }
 
 function setup() {
@@ -56,10 +67,10 @@ function setup() {
         ellipse(x, y, 20, 20);
 
         // positionvalues of the mocap
-        console.log("X: " + data[5].x);
-        console.log("Y: " + data[5].y);
+        // console.log("X: " + data[5].x);
+        // console.log("Y: " + data[5].y);
          // make sure mocap is under 200 for it to activate
-        console.log("Z: " + mocapZ);
+        // console.log("Z: " + mocapZ);
       }
     }
   );
@@ -79,6 +90,10 @@ function setup() {
   for (var i = 0; i < 5; i++) {
     fishes.push(new Fish());
   }
+
+  for (var i = 0; i < 3; i++) {
+    sharks.push(new Shark());
+  }
 }
 
 function draw() {
@@ -96,6 +111,8 @@ function draw() {
     // DRAW AND DELETE FISH
     // check to see if mocap x,y is over image x,y
     // use mousex, mousey for now
+
+    // FISHES
     var fishToBeDeleted = -1;
     for (var i = 0; i < fishes.length; i++) {
       // if not deleted, keep moving
@@ -113,6 +130,25 @@ function draw() {
     if (fishToBeDeleted > -1) {
       fishes.splice(fishToBeDeleted, 1);
     }
+
+    // SHARKS
+     var sharksToBeDeleted = -1;
+     for (var i = 0; i < sharks.length; i++) {
+       // if not deleted, keep moving
+       sharks[i].move();
+       sharks[i].display();
+
+       if ((mouseX > sharks[i].x) && (mouseX < sharks[i].x + 100) && (mouseY > sharks[i].y) && (mouseY < sharks[i].y + 100)) {
+         //delete fish from array
+         sharksToBeDeleted = i;
+         console.log(sharksToBeDeleted);
+         // console.log("HOVER: " + fishes[i].x + ", " + fishes[i].y);
+       }
+     }
+
+     if (sharksToBeDeleted > -1) {
+       sharks.splice(sharksToBeDeleted, 1);
+     }
   }
 
 
@@ -161,8 +197,7 @@ function mousePressed() {
 // Fish class
 function Fish() {
   console.log("CREATING A FISH");
-  var fishAnimation;
-  // initial left side of the screen
+    // initial left side of the screen
   this.x = random(0, 900/9);
   this.y = random(0, 400);
   this.speed = random(.5, 5);
@@ -182,6 +217,31 @@ function Fish() {
     this.x += (-this.speed, this.speed);
   }
 }
+
+// Shark class
+function Shark() {
+  console.log("CREATING A SHARK");
+    // initial left side of the screen
+  this.x = random(0, 900 / 9);
+  this.y = random(0, 400);
+  this.speed = random(1);
+  this.frame = 0;
+  this.numFrames = 91;
+
+  this.display = function () {
+    this.frame = this.frame >= this.numFrames ? 0 : this.frame + 1;
+    sharkAnimation.changeFrame(this.frame);
+    animation(sharkAnimation, this.x, this.y);
+  }
+
+  this.move = function () {
+    if (this.x > 900 + 100) {
+      this.x = 0;
+    }
+    this.x += (-this.speed, this.speed);
+  }
+}
+
 
 function Start(){
   console.log("GRAB START GUI ANIMATIONS");
