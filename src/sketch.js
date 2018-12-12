@@ -1,25 +1,29 @@
 // Holds our socket server connection
 let socket;
 
+// positions
+var mocapZ = 0;
+
 // create water video canvas
 var water;
 // has the player started the game
 var isGamePlaying = false;
 
 // GUI ANIMATION CAST TO START
+var castStart;
 var castStartAnimation;
 
-// fish objects
-var fish;
+// fishes
+var fish1Animation;
+var fishes = [];
 
-// bubble objects?
-
-// // preload animations
+// preload animations
 function preload() {
-  // start animation
-  castStartAnimation = loadAnimation("images/GUI/castStart/start1.png", "images/GUI/castStart/start4.png");
+  // preload start gui animation
+  castStartAnimation = loadAnimation("images/castStart/Frame001.png", "images/castStart/Frame012.png");
+  //fish animations
+  fish1Animation = loadAnimation("images/fish/gradientFish0.png", "images/fish/gradientFish9.png");
 }
-
 
 function setup() {
 
@@ -48,36 +52,71 @@ function setup() {
         // Map between two ranges
         const x = (1 - (data[5].y + 3500) / 7000) * 1000;
         const y = (1 - (data[5].x + 2000) / 5600) * 400;
+        mocapZ = (1 -(data[5].z + 2000) / 5600) * 400;
         ellipse(x, y, 20, 20);
+
+        // positionvalues of the mocap
+        console.log("X: " + data[5].x);
+        console.log("Y: " + data[5].y);
+         // make sure mocap is under 200 for it to activate
+        console.log("Z: " + mocapZ);
       }
     }
   );
 
   // Put your setup code here
   // you can delete this if you want
-  createCanvas(1920, 1080);
+  createCanvas(900, 400);
   // CODE GOES HERE 
   // water video background
   water = createVideo('images/water.mp4');
   water.hide();
+
+  // create start gui
+  castStart = new Start();
+
+  // create an array of fish objects
+  for (var i = 0; i < 5; i++) {
+    fishes.push(new Fish());
+  }
 }
 
 function draw() {
   // Any draw loop code goes here
   // we always want the water background
-  // image(water, 0, 0);
+  image(water, 0, 0);
 
   // Game has not started
   if (!isGamePlaying) {
-    // animate cast to start the program
-    animation(castStartAnimation, 1920 / 2, 1080 / 2);
+    // animate start gui
+    castStart.display();
   }
 
-  // Game has started
   if (isGamePlaying) {
+    // draw Fish on the screen
+    console.log("GAME BEGIN");
+      
+    // check to see if mocap x,y is over image x,y
+    // use mousex, mousey for now
+    for (var i = 0; i < fishes.length; i++) {
+      if ((mouseX > fishes[i].x) && (mouseX < fishes[i].x + 100) && (mouseY > fishes[i].y) && (mouseY < fishes[i].y + 100)) {
+        //delete fish from array
+        // fishes[i].pop();
+        console.log("HOVER: " + fishes[i].x + ", " + fishes[i].y);
+      }
+      // if not deleted, keep moving
+      fishes[i].move();
+      fishes[i].display();
+    }
+
+  
+
+    console.log("GAME END");
 
   }
 
+
+  // MOACP
   // check for z threshold and x/y position for the game to start
   /*
   if (isGamePlaying == false) {}
@@ -108,22 +147,43 @@ function keyPressed() {
 }
 
 function mousePressed() {
-  var d = dist(mouseX, mouseY, 1920 / 2, 1080 / 2);
-  if (d < 100 && !isGamePlaying) {
-    // delete animation by creating a new canvas for the game to begin
-    image(water, 0, 0);
-    // begin the game
-    isGamePlaying = true;
-    gameStart();
+  if (!isGamePlaying) {
+    var d = dist(mouseX, mouseY, 900 / 2, 400 / 2);
+    if (d < 100 && !isGamePlaying) {
+      // delete animation by creating a new canvas for the game to begin
+      isGamePlaying = true;
+      water.loop();
+      console.log("MOUSE PRESSED");
+    }
   }
 }
 
-function gameStart() {
-  water.loop();
-  // create 10 fish objects
+// Fish class
+function Fish() {
+  console.log("CREATING A FISH");
+  var fishAnimation;
+  // initial left side of the screen
+  this.x = random(0, 900/9);
+  this.y = random(0, 400);
+  this.speed = 1;
 
-  // tell the fish to start on one side of the screen
+  this.display = function () {
+    animation(fish1Animation, this.x, this.y);
+  }
 
-  // change x positions to move to the other side
-  // change y positions to make them look dynamic
+  this.move = function() {
+    if (this.x > 900 + 100) {
+      this.x = 0;
+    }
+    this.x += (-this.speed, this.speed);
+  }
+}
+
+function Start(){
+  console.log("GRAB START GUI ANIMATIONS");
+
+  this.display = function () {
+    animation(castStartAnimation, 900/2, 400/2);
+  }
+
 }
