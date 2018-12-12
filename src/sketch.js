@@ -96,7 +96,7 @@ function draw() {
     // DRAW AND DELETE FISH
     // check to see if mocap x,y is over image x,y
     // use mousex, mousey for now
-    var fishToBeDeleted;
+    var fishToBeDeleted = -1;
     for (var i = 0; i < fishes.length; i++) {
       // if not deleted, keep moving
       fishes[i].move();
@@ -105,11 +105,12 @@ function draw() {
       if ((mouseX > fishes[i].x) && (mouseX < fishes[i].x + 80) && (mouseY > fishes[i].y) && (mouseY < fishes[i].y + 80)) {
         //delete fish from array
         fishToBeDeleted = i;
+        console.log(fishToBeDeleted);
         // console.log("HOVER: " + fishes[i].x + ", " + fishes[i].y);
       }
     }
 
-    if (fishToBeDeleted) {
+    if (fishToBeDeleted > -1) {
       fishes.splice(fishToBeDeleted, 1);
     }
   }
