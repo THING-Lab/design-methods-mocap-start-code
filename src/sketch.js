@@ -93,26 +93,25 @@ function draw() {
   }
 
   if (isGamePlaying) {
-    // draw Fish on the screen
-    console.log("GAME BEGIN");
-      
+    // DRAW AND DELETE FISH
     // check to see if mocap x,y is over image x,y
     // use mousex, mousey for now
+    var fishToBeDeleted;
     for (var i = 0; i < fishes.length; i++) {
-      if ((mouseX > fishes[i].x) && (mouseX < fishes[i].x + 100) && (mouseY > fishes[i].y) && (mouseY < fishes[i].y + 100)) {
-        //delete fish from array
-        // fishes[i].pop();
-        console.log("HOVER: " + fishes[i].x + ", " + fishes[i].y);
-      }
       // if not deleted, keep moving
       fishes[i].move();
       fishes[i].display();
+
+      if ((mouseX > fishes[i].x) && (mouseX < fishes[i].x + 80) && (mouseY > fishes[i].y) && (mouseY < fishes[i].y + 80)) {
+        //delete fish from array
+        fishToBeDeleted = i;
+        // console.log("HOVER: " + fishes[i].x + ", " + fishes[i].y);
+      }
     }
 
-  
-
-    console.log("GAME END");
-
+    if (fishToBeDeleted) {
+      fishes.splice(fishToBeDeleted, 1);
+    }
   }
 
 
@@ -148,7 +147,7 @@ function keyPressed() {
 
 function mousePressed() {
   if (!isGamePlaying) {
-    var d = dist(mouseX, mouseY, 900 / 2, 400 / 2);
+    var d = dist(mouseX, mouseY, 900 / 2, 350 / 2);
     if (d < 100 && !isGamePlaying) {
       // delete animation by creating a new canvas for the game to begin
       isGamePlaying = true;
@@ -166,8 +165,12 @@ function Fish() {
   this.x = random(0, 900/9);
   this.y = random(0, 400);
   this.speed = 1;
+  this.frame = 0;
+  this.numFrames = 10;
 
   this.display = function () {
+    this.frame = this.frame >= this.numFrames ? 0 : this.frame + 1;
+    fish1Animation.changeFrame(this.frame);
     animation(fish1Animation, this.x, this.y);
   }
 
